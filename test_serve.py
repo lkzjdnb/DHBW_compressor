@@ -43,11 +43,6 @@ def mainloop(tcpport: int = 1102, init_standard_values: bool = False) -> None:
     server.register_area(srvAreaTM, 1, TMdata)
     server.register_area(srvAreaCT, 1, CTdata)
 
-    if init_standard_values:
-        ba = _init_standard_values()
-        userdata = wordlen_to_ctypes[WordLen.Byte.value] * len(ba)
-        server.register_area(srvAreaDB, 0, userdata.from_buffer(ba))
-
     server.start(tcpport=tcpport)
     while True:
         while True:

@@ -40,11 +40,6 @@
       "type": "BOOL"
     },
     {
-      "name": "AutotoManual",
-      "id": "DB51.DBX2.0",
-      "type": "BOOL"
-    },
-    {
       "name": "Error",
       "id": "M11.1",
       "type": "BOOL"
