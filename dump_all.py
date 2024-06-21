@@ -8,7 +8,7 @@ with open("S7_registers.json") as f:
     regs = json.load(f)
 
 client = snap7.client.Client()
-client.connect("127.0.0.1", 0, 0, 1102)
+client.connect("192.168.1.16", 0, 0, 102)
 
 def read_reg(r):
     if(r["id"].startswith("M")):
