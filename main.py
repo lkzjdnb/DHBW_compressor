@@ -1,6 +1,10 @@
+from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+import re
 import snap7
 from snap7.util.getters import get_real, get_bool
 import json
+
+url = "http://141.72.13.23:9091"
 
 regs = {}
 
@@ -11,6 +15,7 @@ client = snap7.client.Client()
 client.connect("192.168.1.16", 0, 0, 102)
 
 def read_reg(r):
+
     if(r["id"].startswith("M")):
         # TODO
         return 0
@@ -30,10 +35,13 @@ def read_reg(r):
        # print(f"{db} {dbx} {r['id']}")
         val = client.db_read(db, dbx, 1)
         return get_bool(val, 0, dbxi)
-
+    
 while True:
+    registry = CollectorRegistry()
     res = {r["name"]: read_reg(r) for r in regs}
-    print(res)
-data = client.db_read(1, 0, 4)
-print(data)
-client.db_write(1, 0, data)
+    for i in res:
+        g = Gauge(re.sub(r'[\W_]+','_',i), i, registry=registry)
+        g.set(res[i])
+    push_to_gateway(url, job='compressor', registry=registry)
+
+    
