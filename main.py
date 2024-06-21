@@ -41,7 +41,10 @@ while True:
     res = {r["name"]: read_reg(r) for r in regs}
     for i in res:
         g = Gauge(re.sub(r'[\W_]+','_',i), i, registry=registry)
-        g.set(res[i])
+        if(res[i]==None):
+            g.set(-1)
+        else :
+            g.set(res[i])
     push_to_gateway(url, job='compressor', registry=registry)
 
     
